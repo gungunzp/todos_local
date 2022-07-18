@@ -1,25 +1,30 @@
-import logo from './logo.svg';
+import { Outlet } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
 import './App.css';
+import Home from './Home';
+import Login from './Login';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const navigate = useNavigate();
+	const { currUser } = useSelector(state => state.auth);
+	console.log('🚀 ~ file: App.js ~ line 13 ~ App ~ currUser', currUser);
+
+	useEffect(() => {
+		if (currUser) {
+			navigate('./home', { replace: true });
+		} else {
+			navigate('./login', { replace: true });
+		}
+	}, [currUser]);
+
+	return (
+		<div className="App">
+			<Outlet />
+		</div>
+	);
 }
 
 export default App;
